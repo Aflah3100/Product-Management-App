@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.exc import SQLAlchemyError
 import database_models
 from database_config import db_engine
@@ -9,6 +10,13 @@ from typing import List
 import models
 
 server = FastAPI()
+
+server.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+)
 
 
 @server.on_event("startup")
@@ -38,7 +46,7 @@ def get_products(db_session: Session = Depends(get_db_session)):
 
 
 # GET - Fetch product by id
-@server.get("/products/{id}", response_model=models.ProductModel)
+@server.get("/product/{id}", response_model=models.ProductModel)
 def get_product_by_id(id: int, db_session: Session = Depends(get_db_session)):
     try:
         product = (
