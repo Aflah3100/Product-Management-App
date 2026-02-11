@@ -1,15 +1,16 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy import Column,Integer,String,Float
+from sqlalchemy import Column, Integer, String, Float
 
 
-Base=declarative_base()
+Base = declarative_base()
 
-#Database Product Model
+
+# Database Product Model
 class Product(Base):
 
-    __tablename__="Products"
-    id=Column(Integer,primary_key=True,index=True)
-    name=Column(String)
-    description=Column(String)
-    price=Column(Float)
-    quantity=Column(Integer)
+    __tablename__ = "Products"
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String)
+    description = Column(String)
+    price = Column(Float)
+    quantity = Column(Integer)
