@@ -89,8 +89,69 @@ def add_product(
 
 
 # PUT - Update Product by id
-@server.put("/product/{id}")
+@server.put("/product/{id}", response_model=models.ProductModel)
 def update_product_by_id(
     id: int, product: models.ProductModel, db_session: Session = Depends(get_db_session)
 ):
-    pass
+    try:
+        db_product = (
+            db_session.query(database_models.Product)
+            .filter(database_models.Product.id == id)
+            .first()
+        )
+
+        if db_product is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+            )
+        else:
+            db_product.id = product.id
+            db_product.name = product.name
+            db_product.description = product.description
+            db_product.price = product.price
+            db_product.quantity = product.quantity
+            db_session.commit()
+            db_session.refresh(db_product)
+
+            return db_product
+
+    except IntegrityError:
+        db_session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT, detail="Product conflict error"
+        )
+
+    except SQLAlchemyError:
+        db_session.rollback()
+
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error updating product",
+        )
+
+
+# DELETE - Delete product from db
+@server.delete("/product/{id}")
+def delete_product(id: int, db_session: Session = Depends(get_db_session)):
+    try:
+        db_product = (
+            db_session.query(database_models.Product)
+            .filter(database_models.Product.id == id)
+            .first()
+        )
+
+        if db_product is None:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Product not found"
+            )
+        else:
+            db_session.delete(db_product)
+            db_session.commit()
+            return {"message": "Product deleted successfully"}
+
+    except SQLAlchemyError:
+        db_session.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="Error deleting product",
+        )
