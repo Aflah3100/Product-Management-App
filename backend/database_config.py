@@ -1,12 +1,12 @@
-#DATABASE_URL="postgresql://postgres.jlwrkqjlmfvwmgislotw:[YOUR-PASSWORD]@aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true"
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from urllib.parse import quote_plus
+import os
+from dotenv import load_dotenv
 
-DATABASE_URL = (
-    "postgresql://postgres.jlwrkqjlmfvwmgislotw:[YOUR-PASSWORD]"
-    "aws-1-ap-southeast-2.pooler.supabase.com:6543/postgres?pgbouncer=true"
-)
 
+load_dotenv()
+DATABASE_URL=os.getenv("DATABASE_URL")
 
 db_engine=create_engine(
     DATABASE_URL,

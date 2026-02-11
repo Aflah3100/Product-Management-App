@@ -1,5 +1,8 @@
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import Column,Integer,String,Float
+from sqlalchemy import Column,Integer,String,Float
+
+
+Base=declarative_base()
 
 #Database Product Model
 class Product(Base):
