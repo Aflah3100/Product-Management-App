@@ -9,6 +9,17 @@ from database import get_db_session
 from typing import List
 import models
 
+"""
+API Documentation (Swagger):
+
+Run the FastAPI application using:
+    uvicorn main:server --reload
+
+After the server starts, access the API documentation at:
+- Swagger UI: http://localhost:8000/docs
+
+"""
+
 server = FastAPI()
 
 server.add_middleware(
