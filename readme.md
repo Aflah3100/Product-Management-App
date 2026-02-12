@@ -79,3 +79,15 @@ The backend is a FastAPI application that exposes REST APIs for product manageme
 
    
    
+
+
+## 📘 API Documentation (Swagger)
+
+FastAPI automatically generates interactive API documentation.
+Once the backend is running, access:
+### Steps
+
+1. Swagger UI
+   ```bash
+   http://localhost:8000/docs
+
